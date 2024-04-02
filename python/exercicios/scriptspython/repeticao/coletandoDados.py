@@ -1,4 +1,4 @@
-qntdDePessoas = 3
+qntdDePessoas = 20
 
 idadeMasculino = 0 
 qtdDeHomens = 0
