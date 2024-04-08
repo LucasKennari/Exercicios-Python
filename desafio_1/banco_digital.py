@@ -6,7 +6,7 @@ LIMITE_SAQUE = 3
 
 extrato = ""
 
-def banco_digtal(extrato, saldo):
+def banco_digtal(extrato, saldo,numero_de_saques):
        while True:
               operacao = input(menu).lower()
              
@@ -23,24 +23,25 @@ def banco_digtal(extrato, saldo):
                      elif valor_de_saque  > saldo:
                             print(msg_saldo_insuficiente)   
 
-                     # if (numero_de_saques <= LIMITE_SAQUE) and (valor_de_saque <= limite_para_saque) and (valor_de_saque <= saldo):
-                     else:      
+                     elif valor_de_saque > 0:      
                             saldo -= valor_de_saque
-                            extrato += msg_saque.format(usuario,"saque", valor_de_saque, saldo)
+                            extrato += msg_saque.format(usuario,"saque".upper(), valor_de_saque, saldo)
                             print(msg_saque_sucesso)
-
+                            numero_de_saques += 1
+                     else: 
+                            print(erro_msg_valor)
 
               elif operacao == "d":
-                     print(f"{msg_operacao} deposito")
-                     valor = float(input("Digite o valor a ser depositado: \n"))
+                     print(f"{msg_operacao} Deposito")
+                     valor_de_deposito = float(input("Digite o valor a ser depositado: \n"))
 
-                     if valor < 0:
+                     if valor_de_deposito < 0:
                             print(erro_msg_valor)
                             break
 
                      else:
-                            saldo+= valor
-                            extrato += msg_deposito.format(usuario, "deposito", valor,saldo)
+                            saldo+= valor_de_deposito
+                            extrato += msg_deposito.format(usuario.title(), "deposito".upper(), valor_de_deposito,saldo)
                             print(msg_deposito_sucesso)
 
               elif operacao == "e":
@@ -48,7 +49,9 @@ def banco_digtal(extrato, saldo):
                      print(f"{msg_operacao} Extrato")
                      if extrato == "":
                             print(msg_sem_extrato)
-                            break
+                            print("##### EXTRATO ##### \n")
+                            print(f"Saldo Atual: {saldo:.2f}\n")
+                            print("###############")
                      else:
                             print(extrato)
 
@@ -56,6 +59,7 @@ def banco_digtal(extrato, saldo):
 
                      print(f"{msg_operacao} transferencia")
                      print("Transferencia indisponivel no momento . . . ")
+                     
 
               elif operacao == "x":
 
@@ -74,31 +78,38 @@ Bem-vindo(a), {usuario.title()}!
 [e] - Extrato
 [t] - Transferencia
 [x] - Sair
+
 '''
 msg_operacao = "Operacao solicitada:"
 msg_deposito_sucesso = "Depositado com sucesso!!"
 
 erro_msg_valor = '''
-Só é possivel depositar valores positivos.
-tente novamente...
+
+Operacao falhou.
+Tente novamente...
+
 '''
 msg_deposito = """
+###### {1} ######
 Conta: {0},
-Operacao: {1},
-valor depositado: R$ {2}
-Saldo total: R$ {3}
+Valor depositado: R$ {2:.2f}
+Saldo atual: R$ {3:.2f}
+#################
 """
 msg_saque = """
+###### {1} ######
 Conta: {0},
-Operacao: {1},
-valor sacado: R$ {2}
-Saldo total: R$ {3}
+Valor sacado: R$ {2:.2f}
+Saldo atual: R$ {3:.2f}
+#################
 """
-msg_saque_sucesso = "Saque efetuado com sucesso! confira seu saldo!"
-msg_sem_extrato = "Você não possui nenhum extrato bancário."
-msg_limite_de_qtd_saque = "Limite para saque extendido !"
-msg_limite_de_valor_do_saque = "O valor de saque está além do limite possível."
-msg_saldo_insuficiente = "Saldo insuficiente!"
 
-banco_digtal(extrato)
+msg_operacao_falhou = "Operação falhou:"
+msg_saque_sucesso = "Saque efetuado com sucesso! confira seu saldo!"
+msg_sem_extrato = "Você possui nenhuma movimentação bancária"
+msg_limite_de_qtd_saque = f"{msg_operacao_falhou} Limite para saque extendido !"
+msg_limite_de_valor_do_saque = f"{msg_operacao_falhou} O valor de saque está além do limite possível."
+msg_saldo_insuficiente = f"{msg_operacao_falhou} Saldo insuficiente!"
+
+banco_digtal(extrato,numero_de_saques,saldo)
 
